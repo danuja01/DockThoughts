@@ -1,0 +1,31 @@
+# docker-compose.yml
+version: '1.0'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: thoughts-backend
+    container_name: thoughts-backend
+    ports:
+      - '4000:4000'
+    env_file: ./backend/.env
+    networks:
+      - thoughts-network
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: thoughts-frontend
+    container_name: thoughts-frontend
+    depends_on:
+      - backend
+    ports:
+      - '3000:3000'
+    networks:
+      - thoughts-network
+
+networks:
+  thoughts-network:
+    driver: bridge
