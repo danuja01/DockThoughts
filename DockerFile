@@ -1,0 +1,28 @@
+# use Node.js version 16 as the base image
+FROM node:16-alpine
+
+# set the working directory to /app
+WORKDIR /app
+
+# copy the package.json file to the working directory
+COPY backend/package*.json ./backend/
+COPY frontend/package*.json ./frontend/
+
+# install dependencies
+RUN cd backend && npm install
+RUN cd frontend && npm install
+
+# copy the rest of the files to the working directory
+COPY backend/ ./backend/
+COPY frontend/ ./frontend/
+
+# Set the environment variables
+ENV MONGODB_URI="mongodb+srv://danuja:test1234@instadb.5nypjik.mongodb.net/?retryWrites=true&w=majority"
+ENV PORT=4000
+
+# Expose the port
+EXPOSE 4000
+EXPOSE 3000
+
+# start the app
+CMD ["npm", "run", "start"]
